@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dogStart": "nodemon ./DogServer.js",
     "catStart": "nodemon ./CatServer.js",
-    "start": "nodemon ./Server.js"
+    "build":"handlebars views/partials/imageDisplay.handlebars -f public/imageDisplayTemplate.js",
+    "start": "nodemon ./Server.js",
+    "prestart": "npm run build"
   },
   "repository": {
     "type": "git",

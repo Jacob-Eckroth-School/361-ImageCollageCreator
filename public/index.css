@@ -6,16 +6,13 @@ body{
     margin:0px;
     padding:0px;
     font-family:sans-serif;
+
 }
 
-
-
-#contentHolder{
-    display:flex;
-    flex-flow:column wrap;
-    align-items:center;
-    width:70%;
-    margin-left:15%;
+h2{
+    font-size:30px;
+    text-shadow:4px 4px 6px rgb(46, 46, 46);
+    text-align:center;
 }
 
 h1{
@@ -75,6 +72,15 @@ p.descriptionText{
     font-size:50px;
     font-weight:lighter;
     text-shadow:3px 3px 6px rgb(78, 78, 78);
+}
+
+.homePageLink{
+    color:inherit;
+    text-decoration: none;
+}
+.homePageLink:hover{
+    text-decoration: underline;
+
 }
 
 

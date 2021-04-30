@@ -1,26 +1,30 @@
 
 {{#section 'head'}}
-
- 
+    <script src="/imageDisplayTemplate.js"></script>
+    <script src="/imageUploadingScript.js" defer></script>
+    <link rel="stylesheet" href="/images.css" />
     <title>Upload Images</title>
- 
+    
 {{/section}}
 
-  
+    <div id="mainHolder">
+        <div id="photoHolder">
+            <h2 class="imagesHeader">Previously Uploaded Images</h2>
+        </div>
+   
     <div id="contentHolder">
-        <h1>Collage Generator</h1>
+        <h1><a class="homePageLink" href="/" title="Return to Home Page">Collage Generator</a></h1>
           {{> collageTitle}}
 
         <p class="descriptionText">Great! Now you need to upload some images! You will need
             at least one.
         </p>
-    <input type="file" id="myFile" name="filename" accept="image/png, image/jpeg">
-        
-        
+    <input type="file" id="myFile" name="filename" accept="image/png, image/jpeg" multiple>
+    <button id="testButton" type="button">Test</button>
 
     </div>
     
-
+ </div>
 
 
 
