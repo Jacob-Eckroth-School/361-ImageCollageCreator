@@ -1,9 +1,9 @@
 var express = require('express');
 
-
 //note that request is deprecated. If someone has a better easier way to send http requests from
 //express / node.js servers PLEASE submit a pull request.
 const request = require('request');
+
 
 //app is our server.
 var app = express();
@@ -17,33 +17,32 @@ app.use(bodyParser.json());
 
 //loading in ports from an external file so these can be edited easily.
 var ports = require('./ports.json');
-var catPort = ports.catPort
-var dogPort = ports.dogPort
+var port = ports.collagePort;
 
-app.listen(dogPort, function () {
-    console.log("== Dog Server is listening on port ",dogPort);
+app.listen(port, function () {
+    console.log("==Server is listening on port ",port);
 });
 
-
 //this says that if we get a request for a page, first it will look through our
-//publicDog/ folder to see if it can find it there. So if it gets a request for index.html
+//publicCat/ folder to see if it can find it there. So if it gets a request for index.html
 //it will look first to see if it's in there, and if it is just send it.
-app.use(express.static('publicDog'));
+app.use(express.static('public'));
 
 
-app.get('/giveMeADog', function (req, res) {
+app.get('/giveMeACat', function (req, res) {
 
     //I want a cat
    
     sendBody = {}
-    sendBody.msg = "This is a message from the dog server";
+    sendBody.msg = "This is a message from the cat server";
     sendbody = JSON.stringify(sendBody);
     res.status(200).send(sendBody);
    
 })
 
-app.get('/giveMeACat',function(req,res){
-    var url = 'http://localhost:' + String(catPort) + '/giveMeACat';
+
+app.get('/giveMeADog',function(req,res){
+    var url = 'http://localhost:' + String(dogPort) + '/giveMeADog';
     request(url, { json: true }, (err, response, body) => {
         if (err) { return console.log(err); }
         console.log("got this from the other server")
@@ -55,6 +54,7 @@ app.get('/giveMeACat',function(req,res){
       });
 
 })
+
 
 
 
