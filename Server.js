@@ -4,12 +4,15 @@ var express = require('express');
 //express / node.js servers PLEASE submit a pull request.
 const request = require('request');
 
+var exphbs = require('express-handlebars');
 
 //app is our server.
 var app = express();
 
 //this tells it that we will use public as our default static folder. When receiving a request for a file like "index.html" or "index.js" it will check public/index.js or 
 // public/index.html first
+
+const MAXLENGTH = 30;
 
 //body parser parses JSON bodies into nice javascript objects.
 var bodyParser = require('body-parser');
@@ -20,6 +23,17 @@ var ports = require('./ports.json');
 var port = ports.collagePort;
 
 app.listen(port, function () {
+    app.engine('handlebars', exphbs({
+        defaultLayout: 'main',
+        helpers: {
+            section: function (name, options) {
+                if (!this._sections) this._sections = {}
+                this._sections[name] = options.fn(this)
+                return null
+            },
+        }
+    }));
+    app.set('view engine', 'handlebars');
     console.log("==Server is listening on port ",port);
 });
 
@@ -29,33 +43,27 @@ app.listen(port, function () {
 app.use(express.static('public'));
 
 
-app.get('/giveMeACat', function (req, res) {
+app.get('/', function (req, res) {
 
-    //I want a cat
-   
-    sendBody = {}
-    sendBody.msg = "This is a message from the cat server";
-    sendbody = JSON.stringify(sendBody);
-    res.status(200).send(sendBody);
+    res.render('homePage');
    
 })
 
 
-app.get('/giveMeADog',function(req,res){
-    var url = 'http://localhost:' + String(dogPort) + '/giveMeADog';
-    request(url, { json: true }, (err, response, body) => {
-        if (err) { return console.log(err); }
-        console.log("got this from the other server")
-        console.log(body);
 
-        //since the body is already in JSON, we can just send it along without changing anything.
-        //that's the beauty of "REST" or whatever this is. 
-        res.status(200).send(body);
-      });
+app.get('/uploadImages/:collageTitle',function(req,res,next){
+    var userTitle = req.params.collageTitle;
+    if(userTitle.length > MAXLENGTH){
+        next();
+    }else{
+        res.render('uploadImages',{
+            title:userTitle
+        })
+    }
+    
+    
 
 })
-
-
 
 
 //if we get here, then none of the above gets have worked, so we send this. You could also send a nice 404 page.

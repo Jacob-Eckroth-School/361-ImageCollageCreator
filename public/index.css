@@ -24,6 +24,7 @@ h1{
 }
 
 p.descriptionText{
+    margin-top:0px;
     font-family:serif;
     font-size:40px;
     text-align:center;
@@ -68,5 +69,12 @@ p.descriptionText{
     cursor:pointer;
 }
 
+.collageTitle{
+    color:#3a3a3c;
+    margin-top:0px;
+    font-size:50px;
+    font-weight:lighter;
+    text-shadow:3px 3px 6px rgb(78, 78, 78);
+}
 
 
