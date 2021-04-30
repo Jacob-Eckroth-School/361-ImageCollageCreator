@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dogStart": "nodemon ./DogServer.js",
     "catStart": "nodemon ./CatServer.js",
-    "start": "npm run dogStart && npm run catStart"
+    "start": "nodemon ./Server.js"
   },
   "repository": {
     "type": "git",
