@@ -1,9 +1,11 @@
-var testButton = document.getElementById("testButton");
-testButton.addEventListener("click",function(){
-    var context = {
-        animalImage:"http://placekitten.com/200/300"
-    }
-    var photoHTML = Handlebars.templates.imageDisplay(context);
-    document.getElementById("photoHolder").insertAdjacentHTML('beforeend',photoHTML);
+// import 'cropperjs/dist/cropper.css';
+//import Cropper from '/cropperjs/cropperjs';////
 
-})
+const image = document.getElementById('image');
+const cropper = new Cropper(image, {
+  viewMode:1,
+  movable:false,
+  zoomable:false,
+  minCropBoxWidth:100,
+  minCropBoxHeight:100
+});

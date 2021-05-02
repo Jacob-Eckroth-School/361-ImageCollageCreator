@@ -1,8 +1,12 @@
 
 {{#section 'head'}}
+ 
     <script src="/imageDisplayTemplate.js"></script>
-    <script src="/imageUploadingScript.js" defer></script>
+   
     <link rel="stylesheet" href="/images.css" />
+    <link  href="/cropperjs/cropper.css" rel="stylesheet">
+    <script src="/cropperjs/cropper.js" defer></script>
+     <script src="/imageUploadingScript.js" defer></script>
     <title>Upload Images</title>
     
 {{/section}}
@@ -19,8 +23,11 @@
         <p class="descriptionText">Great! Now you need to upload some images! You will need
             at least one.
         </p>
-    <input type="file" id="myFile" name="filename" accept="image/png, image/jpeg" multiple>
-    <button id="testButton" type="button">Test</button>
+  
+        <div>
+             <img id="image" src="https://placekitten.com/200/300">
+        </div>
+
 
     </div>
     
