@@ -9,3 +9,7 @@ const cropper = new Cropper(image, {
   minCropBoxWidth:100,
   minCropBoxHeight:100
 });
+
+
+
+//https://stackabuse.com/handling-file-uploads-in-node-js-with-expres-and-multer/

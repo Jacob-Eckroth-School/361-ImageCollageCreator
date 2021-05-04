@@ -5,8 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dogStart": "nodemon ./DogServer.js",
-    "catStart": "nodemon ./CatServer.js",
     "build": "handlebars views/partials/imageDisplay.handlebars -f public/imageDisplayTemplate.js",
     "start": "nodemon ./Server.js",
     "prestart": "npm run build"
@@ -24,13 +22,18 @@
   "dependencies": {
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
+    "canvas": "^2.7.0",
     "cropperjs": "^1.5.11",
     "dropzone": "^5.9.2",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.0",
     "handlebars": "^4.7.7",
+    "multer": "^1.4.2",
+    "nf-photo-collage": "^1.4.0",
+    "node-pre-gyp": "^0.17.0",
     "path": "^0.12.7",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "webpack": "^5.36.2"
   },
   "devDependencies": {
     "css-loader": "^5.2.4",
