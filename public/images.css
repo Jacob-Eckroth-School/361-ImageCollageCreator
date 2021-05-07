@@ -6,20 +6,59 @@
     display:flex;
     flex-flow:column wrap;
     align-items:center;
+
     width:70%;
    
 }
 .animalPicture{
-    border-radius:5px;
+    border-radius:20px;
     background-color:none;
-    padding:5px;
+
+    width:70%;
+    height:auto;
+    box-shadow:5px 5px 6px #5d5d5d;
 }
 .imageHolder{
+    margin-top:20px;
+    display:flex;
+    flex-flow:column wrap;
+    justify-content:center;
+    align-items:center;
+}
+
+.buttonsHolder{
+    display:flex;
+    flex-flow:row wrap;
+    align-items:center;
+    justify-content:space-around;
+    width:100%;
+    height:40px;
     margin-bottom:10px;
     margin-top:10px;
-    box-shadow:6px 6px 20px rgb(78, 78, 78);
-    background-color:none;
-    border-radius:5px;
+    
+    
+}
+.crop{
+    background-color: #00aeef;
+}
+.delete{
+    background-color: #bf1e2e;
+    
+}
+
+.alterButton{
+    border:none;
+    width:40%;
+    height:100%;
+    border-radius: 10px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:24px;
+    box-shadow:3px 3px 6px #585858;
+    transition:box-shadow .4s ease;
+}
+.alterButton:hover{
+    box-shadow:6px 6px 6px #585858;
 }
 
 
@@ -33,14 +72,15 @@
 
 }
 
-
-#my_awesome_dropzone{
-    color:black;
+#uploadButton{
+    width:20%;
+    height:70px;
+    border-radius:10px;
+    box-shadow:3px 3px 6px #585858;
+    transition:box-shadow .4s ease;
+    border:none;
+    cursor:pointer;
 }
-/* Ensure the size of the image fit the container perfectly */
-img {
-    display: block;
-  
-    /* This rule is very important, please don't ignore this */
-    max-width: 100%;
-  }
+#uploadButton:hover{
+    box-shadow:6px 6px 6px #585858;
+}
