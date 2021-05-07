@@ -47,7 +47,7 @@ app.listen(port, function () {
 //this says that if we get a request for a page, first it will look through our
 //publicCat/ folder to see if it can find it there. So if it gets a request for index.html
 //it will look first to see if it's in there, and if it is just send it.
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', function (req, res) {
