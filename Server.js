@@ -5,6 +5,7 @@ var express = require('express');
 const request = require('request');
 
 var exphbs = require('express-handlebars');
+var path = require('path');
 
 //app is our server.
 var app = express();
@@ -25,6 +26,11 @@ var port = ports.collagePort;
 app.listen(port, function () {
     app.engine('handlebars', exphbs({
         defaultLayout: 'main',
+        extname:'handlebars',
+        layoutsDir:path.join(__dirname,"/views/layouts"),
+        partialsDir:[
+            path.join(__dirname,"/views/partials")
+        ],
         helpers: {
             section: function (name, options) {
                 if (!this._sections) this._sections = {}
@@ -78,7 +84,6 @@ app.get('*', function (req, res) {
 
 
 const multer = require('multer');
-const path = require('path');
 const helpers = require('./helpers');
 
 const storage = multer.diskStorage({
