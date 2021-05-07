@@ -24,6 +24,7 @@ var ports = require('./ports.json');
 var port = ports.collagePort;
 
 app.listen(port, function () {
+    app.set('views', __dirname +'/views');
     app.engine('handlebars', exphbs({
         defaultLayout: 'main',
         extname:'handlebars',
