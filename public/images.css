@@ -84,3 +84,87 @@
 #uploadButton:hover{
     box-shadow:6px 6px 6px #585858;
 }
+
+
+/* Ensure the size of the image fit the container perfectly */
+#cropImg{
+    display: block;
+    border:none;
+    /* This rule is very important, please don't ignore this */
+    max-width: 100%;
+    z-index:3;
+  }
+
+#cropHolder{
+    width:100vw;
+    height:100vh;
+    display:flex;
+    flex-flow:column wrap;
+    justify-content:center;
+    align-items:center;
+    position:absolute;
+    top:0px;
+    left:0px;
+    background-color: #5555556b;
+    margin:0px;
+    padding:0px;
+    z-index:0;
+}
+
+.headerHolder{
+    background-color:white;
+    border:none;
+    border-radius:15px;
+    height:10%;
+    margin-bottom:20px;
+    padding:10px;
+}
+.cropImageHeader{
+    font-size:30px;
+    color:black;
+    text-shadow:1px 1px 6px rgb(46, 46, 46);
+}
+.cropImageHolder{
+    z-index:2;
+    width:50%;
+    height:70%;
+    background-color:white;
+    border:none;
+    border-radius:10px;
+    box-shadow: 3px 3px 6px #5a5a5a;
+}
+
+.cropButtonsHolder{
+    margin-top:30px;
+    width:50%;
+    height:10%;
+    display:flex;
+    flex-flow: row wrap;
+    justify-content:space-around;
+
+}
+
+.cropButton{
+    border:none;
+    width:40%;
+    height:100%;
+    border-radius: 10px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:24px;
+    box-shadow:3px 3px 6px #585858;
+    transition:box-shadow .4s ease;
+
+}
+
+.cropButton:hover{
+    box-shadow:6px 6px 6px #585858;
+}
+
+#cancelCropButton{
+    background-color: #bf1e2e;
+}
+
+#submitCropButton{
+    background-color:#2bb673;
+}

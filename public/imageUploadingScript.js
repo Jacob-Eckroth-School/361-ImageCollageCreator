@@ -18,36 +18,99 @@ imgUpload.addEventListener('change',function(){
         }
         src = URL.createObjectURL(this.files[0]); // set src to blob url
         var newID = this.files[0].name + imageCount + Math.floor(Math.random() * 10000)
-        images[newID] = src;
-    
+        
         
 
-        var context ={
-            alt:"A Picture",
-            animalImage:images[newID],
-            imageID:newID
-        }
-        imageCount++;
-        var photoHTML = Handlebars.templates.imageDisplay(context);
-        
-        document.getElementById("photoHolder").insertAdjacentHTML('beforeend',photoHTML);
-        
-        var insertedImage = document.getElementById("photoHolder").children[document.getElementById("photoHolder").children.length -1];
-        var buttonsHolder = insertedImage.children[insertedImage.children.length-1];
-        var cropButton = buttonsHolder.children[0];
-        var deleteButton=buttonsHolder.children[1];
-        deleteButton.addEventListener("click",function(){
-            attemptDelete(newID)
-        });
-        cropButton.addEventListener("click",function(){
-            attemptCrop(newID);
-        });
-    
+       
+        images[newID] = src;
+        createCropWindow(newID,false);
 
         
         imgUpload.value='';
     }
 });
+function addImage(newID,imageExistsAlready){
+    if(!imageExistsAlready){
+        imageCount++;
+    }
+  
+    var context = {
+        animalImage:images[newID],
+        alt:"a photo",
+        imageID:newID
+
+    }
+    var photoHTML = Handlebars.templates.imageDisplay(context);
+        
+    document.getElementById("photoHolder").insertAdjacentHTML('beforeend',photoHTML);
+    
+    var insertedImage = document.getElementById("photoHolder").children[document.getElementById("photoHolder").children.length -1];
+    var buttonsHolder = insertedImage.children[insertedImage.children.length-1];
+    var cropButton = buttonsHolder.children[0];
+    var deleteButton=buttonsHolder.children[1];
+    deleteButton.addEventListener("click",function(){
+        attemptDelete(newID)
+    });
+    cropButton.addEventListener("click",function(){
+        attemptCrop(newID);
+    });
+}
+
+
+function createCropWindow(newID,imageExistsAlready){
+    var context = {
+        imgSrc:images[newID]
+    }
+    var cropHTML = Handlebars.templates.cropImage(context);
+    document.body.insertAdjacentHTML('beforeend',cropHTML);
+    const image = document.getElementById("cropImg");
+    const cropper = new Cropper(image, {
+        movable:false,
+        rotatable:false,
+        scalable:false,
+        zoomable:false,
+        zoomOnTouch:false,
+        zoomOnWheel:false,
+        minCropBoxWidth:100,
+        minCropBoxHeight:100,
+        background:false,
+        viewMode:2,
+        modal:false
+      });
+      var cancelButton = document.getElementById("cancelCropButton");
+      var submitButton = document.getElementById("submitCropButton");
+
+      cancelButton.addEventListener("click",function(){
+          cancelCrop(cropper,newID,imageExistsAlready);
+      })
+      submitButton.addEventListener("click",function(){
+          submitCrop(cropper,newID,imageExistsAlready);
+      })
+
+}
+
+function cancelCrop(cropper,newID,imageExistsAlready){
+    document.body.removeChild(document.getElementById("cropHolder"))
+    if(!imageExistsAlready){
+        images[newID] = null;
+    }
+   
+}
+
+function submitCrop(cropper,newID,imageExistsAlready){
+    var canvas = cropper.getCroppedCanvas().toBlob((blob)=>{
+        var src = URL.createObjectURL(blob);
+        if(imageExistsAlready){
+            document.getElementById(newID).remove();
+        }
+        images[newID] = src;
+        
+        addImage(newID,imageExistsAlready);
+    });
+    document.body.removeChild(document.getElementById("cropHolder"))
+}
+
+
 
 function attemptDelete(imageID){
 
@@ -60,7 +123,7 @@ function attemptDelete(imageID){
     images[imageID] = null;
 }
 function attemptCrop(imageID){
-    console.log("Crop ",document.getElementById(imageID));
+    createCropWindow(imageID,true);
 }
 
 function uploadImage(){
