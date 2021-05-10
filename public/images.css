@@ -168,3 +168,11 @@
 #submitCropButton{
     background-color:#2bb673;
 }
+
+#sendButton{
+    margin-top:20px;
+    width:20%;
+    height:40px;
+    cursor:pointer;
+    display:none;
+}
