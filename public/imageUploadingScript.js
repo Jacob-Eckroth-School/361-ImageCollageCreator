@@ -54,6 +54,7 @@ function addImage(newID,imageExistsAlready){
     cropButton.addEventListener("click",function(){
         attemptCrop(newID);
     });
+    toggleSendDisplay();
 }
 
 
@@ -121,6 +122,15 @@ function attemptDelete(imageID){
     document.getElementById("photoHolder").removeChild(removingElement);
     imageCount--;
     images[imageID] = null;
+    toggleSendDisplay();
+}
+
+function toggleSendDisplay(){
+    if(imageCount <=0){
+        document.getElementById("sendButton").style.display="none";
+    }else{
+        document.getElementById("sendButton").style.display="block";
+    }
 }
 function attemptCrop(imageID){
     createCropWindow(imageID,true);
