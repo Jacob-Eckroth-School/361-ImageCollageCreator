@@ -71,6 +71,5 @@ function sendBodyFunction(sendBody){
     })
     postRequest.setRequestHeader('Content-Type', 'application/json');
     var send = JSON.stringify(sendBody);
-    console.log(send);
     postRequest.send(send);
 }
