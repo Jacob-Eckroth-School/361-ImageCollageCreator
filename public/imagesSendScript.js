@@ -6,50 +6,52 @@ sendButton.addEventListener("click",sendImages);
 
 
 async function sendImages(){
-    console.log(images);
-
+    var totalImages = 0;
+    var imagesProcessed = 0;
+    for(const [key, imageURL] of Object.entries(images)){
+        if(imageURL === null){
+            continue;
+        }else{
+            totalImages+=1;
+        }
+    }
     var sendBody = {
         "imageAmount":0,
         "collageTitle":document.querySelector(".collageTitle").textContent,
         "images":[]
     }
     const reader = new FileReader();
-    var totalProcessed = 0
-    var totalNeedToProcess = images.length;
-    console.log(totalNeedToProcess);
+    reader.addEventListener("load", function () {
+        // convert image file to base64 string
+        imagesProcessed++;
+        sendBody.imageAmount++;
+        var array = sendBody["images"];
+        array.push(reader.result);
+        sendBody.images = array;
+        console.log(imagesProcessed)
+        console.log(reader.result);
+
+        if(imagesProcessed === totalImages){
+            sendBodyFunction(sendBody);
+        }
+      }, false);
     for(const [key, imageURL] of Object.entries(images)){
         if(imageURL === null){
-            totalProcessed++;
             continue;
         }else{
             let blob = await fetch(imageURL).then(
                 r => r.blob()
             );
-
+            reader.readAsDataURL(blob);
             
-            let reader = new FileReader();
-            reader.readAsArrayBuffer(blob);
-            reader.onload = function() {
-                totalProcessed++;
-               
-                var array = sendBody["images"]
-                array.push(reader.result);
-                sendBody["images"] = array
-            
-                sendBody["imageAmount"] = array.length
-                if(totalProcessed === totalNeedToProcess){
-                    console.log("it does");
-                    sendBodyFunction(sendBody);
-                }else{
-                    console.log("it doesn't")
-                }
 
-            };
+             
               
   
           
         }
     }
+
     
     
 }
@@ -61,6 +63,7 @@ function sendBodyFunction(sendBody){
     postRequest.open("post","/getCollage",true);
     postRequest.addEventListener("load",function(event){
         if(event.target.status === 200){
+            window.location.replace("/result/"+sendBody.collageTitle);
             console.log("we're in business");
         }
     })

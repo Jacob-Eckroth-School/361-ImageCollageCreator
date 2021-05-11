@@ -5,7 +5,7 @@ var fs = require('fs');
 const request = require('request');
 
 var exphbs = require('express-handlebars');
-var path = require('path');
+const path = require('path');
 
 //app is our server.
 var app = express();
@@ -77,16 +77,32 @@ app.get('/result',function(req,res){
     res.render('resultPage');
 })
 
+app.get('/result/:collageTitle',function(req,res){
+    res.render('resultPage');
+})
+
+const createCollage = require(__dirname + "/createCollage");
+
 
 app.get('/getCollage/:collageTitle',function(req,res){
     var fileName = req.params.collageTitle + ".png"
-    const path = __dirname + "/collages/" + fileName;
-    if(fs.existsSync(path)){
-        res.sendFile(path);
+    const pathToFile = __dirname + "/collages/" + fileName;
+    if(fs.existsSync(pathToFile)){
+        res.sendFile(pathToFile);
     }else{
-        res.status(404).send("can't find the file");
+        var imagesDirectory = require('path').join(__dirname,"images",req.params.collageTitle);
+        createCollage.createCollage(req.params.collageTitle,imagesDirectory);
+        setTimeout(function(){
+            if(fs.existsSync(pathToFile)){
+                res.sendFile(pathToFile);
+            }else{
+                res.status(404).send("can't find the file");
+            }
+        },1000) //fix this damn it
+        
+    
     }
-
+    
 
 
 })
@@ -100,18 +116,24 @@ app.get('*', function (req, res) {
 app.post('/getCollage',function(req,res){
     var amountOfImages = req.body.imageAmount;
     var title = req.body.collageTitle;
+    var dirLocation = __dirname + "/images/"+title
+    if (!fs.existsSync(dirLocation)) {
+        fs.mkdirSync(dirLocation, 0744);
+    }
     var imagesText = req.body.images;
- 
-    console.log('hello');
+    
     for(var i = 0; i < amountOfImages; i++){
-        fs.writeFile('test.png',imagesText[i],{
-            encoding:'binary'
-        },err=>{
+        var matches = imagesText[i].match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),response = {};
+        if (matches.length !== 3) {
+            return new Error('Invalid input string');
+        }
+        response.type = matches[1];
+        response.data = new Buffer(matches[2], 'base64');
+        var fileOut = dirLocation + "/" + i + ".png"
+        fs.writeFileSync(fileOut,response.data,err=>{
          
             if(err){
                 console.log(err);
-            }else{
-                console.log("done");
             }
         })
     }

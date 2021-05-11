@@ -1,8 +1,9 @@
 
 
-loadResult('title');
+loadResult(window.location.pathname.split("/").pop());
 
 function loadResult(title){
+
     context={
         collageTitle:title
     }

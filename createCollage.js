@@ -1,5 +1,6 @@
 
 const fs = require('fs')
+const path = require('path')
 const { createCanvas,loadImage } = require('canvas')
 const { randomBytes, randomInt } = require('crypto')
 
@@ -27,16 +28,32 @@ async function loadImages(imagePathArray){
 
 }
 
-let imagePathArray = ["assets/1.jpeg","assets/2.jpeg","assets/3.jpeg","assets/4.jpeg","assets/5.jpeg","assets/6.jpeg","assets/1.jpeg","assets/2.jpeg","assets/3.jpeg","assets/4.jpeg","assets/5.jpeg","assets/6.jpeg","assets/1.jpeg","assets/2.jpeg","assets/3.jpeg","assets/4.jpeg","assets/5.jpeg","assets/6.jpeg","assets/1.jpeg","assets/2.jpeg","assets/3.jpeg","assets/4.jpeg","assets/5.jpeg","assets/6.jpeg"]
+function createCollage(title,dirLocation){
+    var images = [];
+    fs.readdir(dirLocation, function(err,files){
+        if (err) {
+            return console.log('Unable to scan directory: ' + err);
+        } 
+        files.forEach(function (file) {
+            // Do whatever you want to do with the file
+            images.push(path.join(dirLocation,file));
+            console.log(images);
+        });
+        createCanvasAsync(images,title);
+    })
+ 
 
-async function createCanvasAsync(){
-   await loadImages(imagePathArray);
-   placeImagesOnCanvas();
+}
+exports.createCollage = createCollage;
+
+async function createCanvasAsync(images,title){
+   await loadImages(images);
+   placeImagesOnCanvas(title);
 }
 
 
-function placeImagesOnCanvas(){
-    console.log(images);
+function placeImagesOnCanvas(title){
+
     let horizontalSections,verticalSections;
     if(images.length < 3){
         horizontalSections = images.length;
@@ -53,14 +70,14 @@ function placeImagesOnCanvas(){
         verticalSections = 3.;
     }
     let horizontalAdvance  = width / horizontalSections;
-    console.log("Horizontal advance: ",horizontalAdvance);
+
     let verticalAdvance = height / verticalSections;
     
     var currentImageIndex = 0;
     while(true){
         for(var x = 0; x < horizontalSections; x++){
             for(var y = 0; y < verticalSections; y++){
-                console.log("x:",x,"Y:",y);
+ 
                 var placeX = x * horizontalAdvance + randomInt(0,horizontalAdvance);
                 var placeY = y * verticalAdvance + randomInt(0,verticalAdvance);
                 var currentImage = images[currentImageIndex];
@@ -69,12 +86,12 @@ function placeImagesOnCanvas(){
           
                 let newHeight, newWidth;
                 if(images.width > images.height){
-                    console.log("width > height");
+                 
                     newWidth = horizontalAdvance *  (randomInt(7,10) * .1);
                     
                     newHeight = newWidth / wToH;
                 }else{
-                    console.log("height < width");
+                   
                     newHeight = verticalAdvance  *  (randomInt(7,10) * .1); ;
                     newWidth = newHeight * wToH;
                 }
@@ -84,14 +101,14 @@ function placeImagesOnCanvas(){
                 if(placeY + newHeight > height){
                     placeY = height - newHeight;
                 }
-                console.log("Drawing with x: ",placeX," Y: ",placeY, "New Width: ",newWidth," and height:",newHeight);
+              
                 context.drawImage(currentImage,placeX,placeY,newWidth,newHeight);
                 
 
                 currentImageIndex++;
                 if(currentImageIndex >= images.length){
                     const buffer = canvas.toBuffer('image/png')
-                    fs.writeFileSync('./test2.png', buffer)
+                    fs.writeFileSync(path.join(__dirname,'collages',title+".png"), buffer)
                     return;
                 }
             }
@@ -103,10 +120,3 @@ function placeImagesOnCanvas(){
 
 
 }
-
-
-
-
-
-
-createCanvasAsync();
