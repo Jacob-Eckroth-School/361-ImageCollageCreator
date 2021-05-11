@@ -29,8 +29,6 @@ async function sendImages(){
         var array = sendBody["images"];
         array.push(reader.result);
         sendBody.images = array;
-        console.log(imagesProcessed)
-        console.log(reader.result);
 
         if(imagesProcessed === totalImages){
             sendBodyFunction(sendBody);
@@ -64,8 +62,11 @@ function sendBodyFunction(sendBody){
     postRequest.open("post","/getCollage",true);
     postRequest.addEventListener("load",function(event){
         if(event.target.status === 200){
+            console.log("replacing location");
             window.location.replace("/result/"+sendBody.collageTitle);
-            console.log("we're in business");
+           
+        }else{
+            console.log("we are not in business");
         }
     })
     postRequest.setRequestHeader('Content-Type', 'application/json');
