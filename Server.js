@@ -85,7 +85,8 @@ const createCollage = require(__dirname + "/createCollage");
 
 
 app.get('/getCollage/:collageTitle',function(req,res){
-    var fileName = req.params.collageTitle + ".png"
+  console.log("got request for collage");  
+  var fileName = req.params.collageTitle + ".png"
     const pathToFile = __dirname + "/collages/" + fileName;
     if(fs.existsSync(pathToFile)){
         res.sendFile(pathToFile);
