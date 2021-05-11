@@ -1,5 +1,6 @@
 
 
+
 var sendButton = document.getElementById("sendButton");
 
 sendButton.addEventListener("click",sendImages);
