@@ -117,7 +117,7 @@ app.get('*', function (req, res) {
 app.post('/getCollage',function(req,res){
     var amountOfImages = req.body.imageAmount;
     var title = req.body.collageTitle;
-    var dirLocation = __dirname + "/images/"+title
+    var dirLocation = path.join(__dirname,"/images",title)
     if (!fs.existsSync(dirLocation)) {
         fs.mkdirSync(dirLocation, 0744);
     }
