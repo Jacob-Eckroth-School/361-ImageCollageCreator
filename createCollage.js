@@ -13,17 +13,18 @@ const context = canvas.getContext('2d')
 context.fillStyle = '#ffffff'
 context.fillRect(0, 0, width, height)
 
-
-var images = []
+var currentImages = []
 
 async function loadImages(imagePathArray){
-    for(let i = 0; i < imagePathArray.length; i++){
+  var newImages = []  
+  for(let i = 0; i < imagePathArray.length; i++){
             await loadImage(imagePathArray[i]).then(image => {
-            images.push(image);
+            newImages.push(image);
    
           
         })
     }
+  return newImages
    
 
 }
@@ -47,13 +48,13 @@ function createCollage(title,dirLocation){
 exports.createCollage = createCollage;
 
 async function createCanvasAsync(images,title){
-   await loadImages(images);
+   currentImages = await loadImages(images);
    placeImagesOnCanvas(title);
 }
 
 
 function placeImagesOnCanvas(title){
-
+    var images = currentImages
     let horizontalSections,verticalSections;
     if(images.length < 3){
         horizontalSections = images.length;
