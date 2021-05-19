@@ -110,7 +110,7 @@ app.get('/getCollage/:collageTitle',function(req,res){
 
 
 app.get('/361GiveMeCollage',function(req,res){
-    fs.readFile(path.join(__dirname,"ExampleImage.png"),(err,data)=>{
+    fs.readFile(path.join(__dirname,"public","ExampleImage.png"),(err,data)=>{
         if(err) res.status(500).send(err);
 
         //get image file extension name
