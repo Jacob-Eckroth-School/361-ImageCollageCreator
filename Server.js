@@ -114,7 +114,7 @@ app.get('/361GiveMeCollage',function(req,res){
         if(err) res.status(500).send(err);
 
         //get image file extension name
-        let extensionName = path.extname(path.join(__dirname,"ExampleImage.png"));
+        let extensionName = path.extname(path.join(__dirname,"public","ExampleImage.png"));
         
         //convert image file to base64-encoded string
         let base64Image = new Buffer(data, 'binary').toString('base64');
