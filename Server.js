@@ -108,6 +108,30 @@ app.get('/getCollage/:collageTitle',function(req,res){
 
 })
 
+
+app.get('/361GiveMeCollage',function(req,res){
+    fs.readFile(path.join(__dirname,"ExampleImage.png"),(err,data)=>{
+        if(err) res.status(500).send(err);
+
+        //get image file extension name
+        let extensionName = path.extname(path.join(__dirname,"ExampleImage.png"));
+        
+        //convert image file to base64-encoded string
+        let base64Image = new Buffer(data, 'binary').toString('base64');
+        
+        //combine all strings
+        let imgSrcString = `data:image/${extensionName.split('.').pop()};base64,${base64Image}`;
+        var sendBody = {
+            "id":"a9aslkj23jklasdfjlk1",
+            "title":"Horsey",
+            "imageData":imgSrcString
+        }
+        res.status(200).send(JSON.stringify(sendBody))
+    })
+
+
+})
+
 //if we get here, then none of the above gets have worked, so we send this. You could also send a nice 404 page.
 app.get('*', function (req, res) {
     res.status(404);
