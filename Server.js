@@ -102,14 +102,9 @@ app.get('/getCollage/:collageTitle', function (req, res) {
         res.sendFile(pathToFile);
     } else {
         var imagesDirectory = require('path').join(__dirname, "images", req.params.collageTitle);
-        createCollage.createCollage(req.params.collageTitle, imagesDirectory);
-        setTimeout(function () {
-            if (fs.existsSync(pathToFile)) {
-                res.sendFile(pathToFile);
-            } else {
-                res.status(404).send("can't find the file");
-            }
-        }, 1000) //fix this damn it
+        createCollage.createCollages(req.params.collageTitle, imagesDirectory);
+       
+        res.status(200).send
 
 
     }

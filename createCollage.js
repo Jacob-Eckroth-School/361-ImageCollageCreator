@@ -28,7 +28,7 @@ async function loadImages(imagePathArray) {
 
 }
 
-function createCollage(title, dirLocation,drawingTitle,strokeText) {
+function createCollages(title, dirLocation) {
     var images = [];
     fs.readdir(dirLocation, function (err, files) {
         if (err) {
@@ -39,17 +39,20 @@ function createCollage(title, dirLocation,drawingTitle,strokeText) {
             images.push(path.join(dirLocation, file));
 
         });
-        createCanvasAsync(images, title,drawingTitle,strokeText);
+        createCanvasAsync(images, title);
     })
 
 
 }
-exports.createCollage = createCollage;
+exports.createCollage = createCollages;
 
-async function createCanvasAsync(images, title,drawingTitle,strokeText) {
+async function createCanvasAsync(images, title) {
     currentImages = await loadImages(images);
     
-    placeImagesOnCanvasDistributedCorners(title,drawingTitle,strokeText);
+    placeImagesOnCanvasDistributedCorners(title,true,true);
+    placeImagesOnCanvasDistributedCorners(title,true,false);
+    placeImagesOnCanvasDistributedCorners(title,false,false);
+    currentImages = []
 }
 
 function shuffle(array) {
@@ -242,65 +245,18 @@ function placeImagesOnCanvasDistributedCorners(title, drawingTitle,strokeText) {
        
     }
     
-    currentImages = []
+   
     const buffer = canvas.toBuffer('image/png')
-    fs.writeFileSync(path.join(__dirname, 'collages', title + ".png"), buffer)
-
-}
-
-function placeImagesOnCanvas(title) {
-
-    const canvas = createCanvas(width, height)
-    const context = canvas.getContext('2d')
-
-    context.fillStyle = '#666666'
-    context.fillRect(0, 0, width, height)
-
-    var images = currentImages
-    var numImages = images.length;
-
-
-    rects = []
-    var currentXQuadrant = 0
-    var currentYQuadrant = 0
-    var xQuadrants = 2
-    var yQuadrants = 2
-    var xQuadrantLength = width / xQuadrants;
-    var yQuadrantLength = height / yQuadrants
-    for (var i = 0; i < numImages; i++) {
-        var currentImage = images[i]
-        var currentWidth = Number(currentImage.width);
-        var currentHeight = Number(currentImage.height);
-        var wToH = currentImage.width / currentImage.height;
-        let newWidth, newHeight;
-        if (currentWidth > currentHeight) {
-            newWidth = randomInt(minImageWidth, maxImageWidth)
-            newHeight = Math.floor(newWidth / wToH);
-        } else {
-            newHeight = randomInt(minImageHeight, maxImageHeight)
-            newWidth = Math.floor(newHeight * wToH);
-        }
-        var xPlacement = randomInt(currentXQuadrant * xQuadrantLength, ((currentXQuadrant + 1) * xQuadrantLength) - newWidth)
-        var yPlacement = randomInt(currentYQuadrant * yQuadrantLength, ((currentYQuadrant + 1) * yQuadrantLength) - newHeight)
-        console.log(xPlacement, " ", yPlacement)
-        context.drawImage(currentImage, xPlacement, yPlacement, newWidth, newHeight)
-        currentXQuadrant++
-        if (currentXQuadrant > xQuadrants) {
-            currentXQuadrant = 0
-            currentYQuadrant++
-            if (currentYQuadrant > yQuadrants) {
-                currentYQuadrant = 0
-            }
-        }
+    var extension;
+    if(drawingTitle==false){
+        extension = "-blank"
+    }else if(strokeText == false){
+        extension = "-text"
+    }else if(strokeText== true){
+        extension = "-stroke"
     }
-
-
-
-    currentImages = []
-    const buffer = canvas.toBuffer('image/png')
-    fs.writeFileSync(path.join(__dirname, 'collages', title + ".png"), buffer)
-
+    fs.writeFileSync(path.join(__dirname, 'collages', title + extension + ".png"), buffer)
 
 }
 
-createCollage("123456789012345678901234567890",path.join(__dirname,"images/test"),true,true)
+createCollages("123456789012345678901234567890",path.join(__dirname,"images/test"))
