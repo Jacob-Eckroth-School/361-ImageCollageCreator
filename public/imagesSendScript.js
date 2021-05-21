@@ -59,11 +59,11 @@ async function sendImages(){
 function sendBodyFunction(sendBody){
 
     var postRequest = new XMLHttpRequest();
-    postRequest.open("post","/getCollage",true);
+    postRequest.open("post","/uploadImages",true);
     postRequest.addEventListener("load",function(event){
         if(event.target.status === 200){
-            console.log("replacing location");
-            window.location.replace("/result/"+sendBody.collageTitle);
+           
+            window.location.replace("/collageType/"+sendBody.collageTitle);
            
         }else{
             console.log("we are not in business");

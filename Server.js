@@ -83,31 +83,37 @@ app.get('/uploadImages/:collageTitle', function (req, res, next) {
 
 
 })
+
+app.get('/collageType/:collageTitle',function(req,res){
+    res.status(200).send("welcome to this page!")
+})
+
+
+
+
 app.get('/result', function (req, res) {
     res.render('resultPage');
 })
 
-app.get('/result/:collageTitle', function (req, res) {
+app.get('/result/:collageTitle/:style', function (req, res) {
     res.render('resultPage');
 })
+
 
 const createCollage = require(__dirname + "/createCollage");
 
 
-app.get('/getCollage/:collageTitle', function (req, res) {
+app.get('/getCollage/:collageTitle/:style', function (req, res) {
     console.log("got request for collage");
     var fileName = req.params.collageTitle + ".png"
-    const pathToFile = __dirname + "/collages/" + fileName;
-    if (fs.existsSync(pathToFile)) {
-        res.sendFile(pathToFile);
-    } else {
-        var imagesDirectory = require('path').join(__dirname, "images", req.params.collageTitle);
-        createCollage.createCollages(req.params.collageTitle, imagesDirectory);
-       
-        res.status(200).send
+    res.status(200).send()
+
+    var imagesDirectory = require('path').join(__dirname, "images", req.params.collageTitle);
+    createCollage.createCollages(req.params.collageTitle, imagesDirectory);
+    
 
 
-    }
+
 
 
 
@@ -116,7 +122,7 @@ app.get('/getCollage/:collageTitle', function (req, res) {
 
 
 
-app.post('/getCollage', function (req, res) {
+app.post('/uploadImages', function (req, res) {
     var amountOfImages = req.body.imageAmount;
     var title = req.body.collageTitle;
     var dirLocation = path.join(__dirname, "/images", title)

@@ -44,11 +44,13 @@ function createCollages(title, dirLocation) {
 
 
 }
-exports.createCollage = createCollages;
+exports.createCollages = createCollages;
 
 async function createCanvasAsync(images, title) {
     currentImages = await loadImages(images);
-    
+    if(images.length == 0){
+        return 
+    }
     placeImagesOnCanvasDistributedCorners(title,true,true);
     placeImagesOnCanvasDistributedCorners(title,true,false);
     placeImagesOnCanvasDistributedCorners(title,false,false);
