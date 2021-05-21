@@ -24,6 +24,8 @@ app.use(bodyParser.urlencoded({
     limit: '50mb',
     extended: true
 }));
+var favicon = require('serve-favicon')
+app.use(favicon(path.join(__dirname,'public','publicImages','favicon.ico')));
 
 //loading in ports from an external file so these can be edited easily.
 var ports = require('./ports.json');
@@ -226,6 +228,9 @@ function test() {
     });
 
 }
+
+
+
 
 function test2() {
     const robertServer = servers.robertServer

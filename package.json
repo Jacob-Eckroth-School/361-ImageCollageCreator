@@ -34,6 +34,7 @@
     "node-pre-gyp": "^0.17.0",
     "path": "^0.12.7",
     "request": "^2.88.2",
+    "serve-favicon": "^2.5.0",
     "webpack": "^5.36.2"
   },
   "devDependencies": {
