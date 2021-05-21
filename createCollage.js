@@ -28,7 +28,7 @@ async function loadImages(imagePathArray) {
 
 }
 
-function createCollage(title, dirLocation) {
+function createCollage(title, dirLocation,drawingTitle,strokeText) {
     var images = [];
     fs.readdir(dirLocation, function (err, files) {
         if (err) {
@@ -39,17 +39,17 @@ function createCollage(title, dirLocation) {
             images.push(path.join(dirLocation, file));
 
         });
-        createCanvasAsync(images, title);
+        createCanvasAsync(images, title,drawingTitle,strokeText);
     })
 
 
 }
 exports.createCollage = createCollage;
 
-async function createCanvasAsync(images, title) {
+async function createCanvasAsync(images, title,drawingTitle,strokeText) {
     currentImages = await loadImages(images);
     
-    placeImagesOnCanvasDistributedCorners(title);
+    placeImagesOnCanvasDistributedCorners(title,drawingTitle,strokeText);
 }
 
 function shuffle(array) {
@@ -78,7 +78,7 @@ const minImageHeight = 400
 const backgroundColor = '#090909'
 
 
-function placeImagesOnCanvasDistributedCorners(title) {
+function placeImagesOnCanvasDistributedCorners(title, drawingTitle,strokeText) {
     shuffle(currentImages)
     const canvas = createCanvas(width, height)
     const context = canvas.getContext('2d')
@@ -217,8 +217,31 @@ function placeImagesOnCanvasDistributedCorners(title) {
         context.drawImage(currentImage, xPos, yPos, newWidth, newHeight)
         currentImageIndex++
     }
-   
+    if(drawingTitle){
+        
+        context.shadowOffsetX = 5;
+        context.shadowOffsetY = 5;
+       
+        fontSize = 200 - title.length*5;
 
+        context.shadowColor = "rgba(0,0,0,0.3)";
+
+    
+        context.shadowBlur = 4;
+        context.font=fontSize+"px Arial";
+        lineHeight = context.measureText('M').width;
+        context.fillStyle="white"
+        context.textAlign="center"
+        context.fillText(title,width/2,lineHeight + 10)
+        
+        if(strokeText){
+            context.strokeStyle="black"
+            context.lineWidth=5 - title.length/10.
+            context.strokeText(title,width/2,lineHeight + 10)
+        }
+       
+    }
+    
     currentImages = []
     const buffer = canvas.toBuffer('image/png')
     fs.writeFileSync(path.join(__dirname, 'collages', title + ".png"), buffer)
@@ -280,3 +303,4 @@ function placeImagesOnCanvas(title) {
 
 }
 
+createCollage("123456789012345678901234567890",path.join(__dirname,"images/test"),true,true)
