@@ -85,7 +85,8 @@ app.get('/uploadImages/:collageTitle', function (req, res, next) {
 })
 
 app.get('/collageType/:collageTitle',function(req,res){
-    res.status(200).send("welcome to this page!")
+    res.render('collageTypePage')
+
 })
 
 
@@ -105,20 +106,33 @@ const createCollage = require(__dirname + "/createCollage");
 
 app.get('/getCollage/:collageTitle/:style', function (req, res) {
     console.log("got request for collage");
-    var fileName = req.params.collageTitle + ".png"
-    res.status(200).send()
 
-    var imagesDirectory = require('path').join(__dirname, "images", req.params.collageTitle);
-    createCollage.createCollages(req.params.collageTitle, imagesDirectory);
     
 
-
-
-
+    var imageLocation = require('path').join(__dirname, "collages", req.params.collageTitle + "-" + req.params.style+".png");
+    console.log("Image Location:",imageLocation)
+    seeIfFileExists(imageLocation,2000,8,res)
+        
+  
 
 
 })
 
+function seeIfFileExists(fileLocation,timeout,checksLeft,res){
+    console.log("seeing if file exists with ",checksLeft," checks left")
+    if(fs.existsSync(fileLocation)){
+        res.sendFile(fileLocation)
+     
+    }else{
+        if(checksLeft == 0){
+            res.sendFile(path.join(__dirname,"public","images","ohno.png"))
+           
+        }else{
+            setTimeout(function(){
+                seeIfFileExists(fileLocation,timeout,checksLeft-1,res)},timeout);
+        }
+    }
+}
 
 
 
@@ -148,6 +162,7 @@ app.post('/uploadImages', function (req, res) {
         })
     }
     res.status(200).send();
+    createCollage.createCollages(title,dirLocation)
 })
 
 

@@ -1,0 +1,46 @@
+#contentHolder{
+    display:flex;
+    flex-flow:column wrap;
+    align-items:center;
+    width:70%;
+    margin-left:15%;
+   
+}
+
+
+#collageTypesHolder{
+    color:black;
+    display:flex;
+    flex-flow:row wrap;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+}
+
+.typeTitle{
+    font-size:2rem;
+}
+.collageImageAndButtonHolder{
+    padding:none;
+    margin:none;
+    display:flex;
+    flex-flow: column wrap;
+    align-items:center;
+    justify-content:center;
+    width:30%;
+    background-color:white;
+    padding:10px;
+    border-radius:5px;
+    border:none;
+    cursor:pointer;
+    box-shadow:5px 5px 6px #5d5d5d;
+    transition:box-shadow ease .3s;
+}
+.collageImageAndButtonHolder:hover{
+    box-shadow:10px 10px 6px #5d5d5d;
+}
+.exampleImage{
+    margin:0px;
+    width:100%;
+    height:auto;
+}

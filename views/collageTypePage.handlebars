@@ -1,0 +1,48 @@
+
+{{#section 'head'}}
+
+    <title>Collage Creator</title>
+   
+    <script src="/pickCollage.js"  defer></script>    <!-- defer makes it wait until the page is fully loaded-->
+    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="/collagePicker.css">
+{{/section}}
+
+
+    <div id="contentHolder">
+        <h1><a class="homePageLink" href="/" title="Return to Home Page">Collage Generator</a></h1>
+
+
+        <h2> Please select what type of collage you would like to get.</h2>
+
+        <div id="collageTypesHolder">
+                <div id="blankCollage" class="collageImageAndButtonHolder">
+                    <h3 class="typeTitle">
+                        No Text
+                    </h3>
+                    <img class="exampleImage" src="/images/Example-blank.png" alt="Example Blank Collage"/>
+                </div>
+          
+                <div id="textCollage" class="collageImageAndButtonHolder">
+                    <h3 class="typeTitle">
+                        Text with no stroke
+                    </h3>
+                    <img class="exampleImage" src="/images/Example-text.png" alt="Example Collage With Title"/>
+                </div>
+        
+         
+                <div id="strokeCollage" class="collageImageAndButtonHolder">
+                    <h3 class="typeTitle">
+                        Text with stroke
+                    </h3>
+                    <img class="exampleImage" src="/images/Example-stroke.png" alt="Example Collage with Title With Stroke"/>
+                </div>
+       
+
+
+        </div>
+     
+
+
+    </div>
+    

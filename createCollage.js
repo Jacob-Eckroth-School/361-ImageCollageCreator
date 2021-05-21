@@ -48,7 +48,7 @@ exports.createCollages = createCollages;
 
 async function createCanvasAsync(images, title) {
     currentImages = await loadImages(images);
-    if(images.length == 0){
+    if(currentImages.length == 0){
         return 
     }
     placeImagesOnCanvasDistributedCorners(title,true,true);
@@ -103,10 +103,11 @@ function placeImagesOnCanvasDistributedCorners(title, drawingTitle,strokeText) {
         leftBottomMaxX:0,
     }
     for(var i = 0; i < 4; i++){
-        if(currentImageIndex > numImages){
+        if(currentImageIndex >= numImages){
             break;
         }
         var currentImage = images[currentImageIndex]
+      
         var currentWidth = Number(currentImage.width);
         var currentHeight = Number(currentImage.height);
         var wToH = currentImage.width / currentImage.height;
@@ -142,7 +143,7 @@ function placeImagesOnCanvasDistributedCorners(title, drawingTitle,strokeText) {
     }
 
     for(var i = 0; i < 4; i++){
-        if(currentImageIndex > numImages){
+        if(currentImageIndex >= numImages){
             break;
         }
         var currentImage = images[currentImageIndex]
@@ -261,4 +262,4 @@ function placeImagesOnCanvasDistributedCorners(title, drawingTitle,strokeText) {
 
 }
 
-createCollages("123456789012345678901234567890",path.join(__dirname,"images/test"))
+//createCollages("Example Collage",path.join(__dirname,"images/test"))
