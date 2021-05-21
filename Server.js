@@ -125,7 +125,7 @@ function seeIfFileExists(fileLocation,timeout,checksLeft,res){
      
     }else{
         if(checksLeft == 0){
-            res.sendFile(path.join(__dirname,"public","images","ohno.png"))
+            res.sendFile(path.join(__dirname,"public","publicImages","ohno.png"))
            
         }else{
             setTimeout(function(){
