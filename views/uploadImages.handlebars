@@ -1,13 +1,13 @@
 
 {{#section 'head'}}
  
-    <script src="/cropImageTemplate.js"></script>
-   <script src="/imageDisplayTemplate.js"></script>
-    <link rel="stylesheet" href="/images.css" />
+    <script src="/js/cropImageTemplate.js"></script>
+   <script src="/js/imageDisplayTemplate.js"></script>
+    <link rel="stylesheet" href="/css/images.css" />
     <link  href="/cropperjs/cropper.css" rel="stylesheet">
     <script src="/cropperjs/cropper.js" defer></script>
-     <script src="/imageUploadingScript.js" defer></script>
-     <script src="/imagesSendScript.js" defer></script>
+     <script src="/js/imageUploadingScript.js" defer></script>
+     <script src="/js/imagesSendScript.js" defer></script>
     <title>Collage Creator</title>
     
 {{/section}}
@@ -18,7 +18,7 @@
         </div>
    
     <div id="contentHolder">
-        <h1><a class="homePageLink" href="/" title="Return to Home Page">Collage Generator</a></h1>
+        <h1><a class="homePageLink" href="/" title="Return to Home Page">Collage Creator</a></h1>
           {{> collageTitle}}
 
         <p class="descriptionText">Great! Now you need to upload some images! You will need
@@ -28,6 +28,11 @@
             <button type="button" id="uploadButton">Upload An Image</button>
             <button type="button" id="sendButton">Done</button>
     </div>
+
+        <button type="button" title="Go Back To Title Selection" id="backButton">
+            Go Back
+        </button>
+   
     
  </div>
 

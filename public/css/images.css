@@ -80,9 +80,11 @@
     transition:box-shadow .4s ease;
     border:none;
     cursor:pointer;
+    font-size:1.5rem;
 }
 #uploadButton:hover{
     box-shadow:6px 6px 6px #585858;
+    color:#00aeef;
 }
 
 

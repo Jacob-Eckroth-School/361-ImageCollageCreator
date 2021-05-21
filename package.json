@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "handlebars views/partials/imageDisplay.handlebars -f public/imageDisplayTemplate.js && handlebars views/partials/cropImage.handlebars -f public/cropImageTemplate.js && handlebars views/partials/resultDisplay.handlebars -f public/resultDisplayTemplate.js",
+    "build": "handlebars views/partials/imageDisplay.handlebars -f public/js/imageDisplayTemplate.js && handlebars views/partials/cropImage.handlebars -f public/cropImageTemplate.js && handlebars views/partials/resultDisplay.handlebars -f public/js/resultDisplayTemplate.js",
     "start": "nodemon ./Server.js",
     "prestart": "npm run build"
   },
