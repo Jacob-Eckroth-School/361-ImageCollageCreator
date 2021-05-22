@@ -207,36 +207,18 @@ app.get('/checkForOldImages/:title',function(req,res){
 
 
 app.get('/apirequest/:title', function (req, res) {
-    console.log("got an api request from this title:",req.params.title)
-    fs.readFile(path.join(__dirname, "public", "ExampleImage.png"), (err, data) => {
-        if (err) res.status(500).send(err);
+    var robertURL = servers.robertServer + req.params.title;
+    var andyURL = servers.andyServer;
+    var sendBody = {
+        "id": "whyAmIHavingAnID? I don't remember",
+        "title": req.params.title,
+        "collageData": "",
+        "wordCloudData":""
+    }
 
-        //get image file extension name
-        let extensionName = path.extname(path.join(__dirname, "public", "ExampleImage.png"));
-
-        //convert image file to base64-encoded string
-        let base64Image = new Buffer(data, 'binary').toString('base64');
-
-        //combine all strings
-        let imgSrcString = `data:image/${extensionName.split('.').pop()};base64,${base64Image}`;
-        var sendBody = {
-            "id": "a9aslkj23jklasdfjlk1",
-            "title": req.params.title,
-            "collageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",
-            "wordCloudData":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
-        }
-        res.status(200).send(JSON.stringify(sendBody))
-    })
-
-
-})
-
-
-
-function test() {
-    const andyServer = servers.andyServer;
-    console.log("Andy Server:", andyServer)
-    https.get(andyServer, (resp) => {
+    var wordCloudLoaded = false;
+    var collageLoaded = false;
+    https.get(andyURL, (resp) => {
         let data = '';
 
         // A chunk of data has been received.
@@ -246,14 +228,20 @@ function test() {
 
         // The whole response has been received. Print out the result.
         resp.on('end', () => {
-
+            
             encodedData = new Buffer(data, 'base64')
-            var fileOut = __dirname + "/andyImage.png"
-            fs.writeFileSync(fileOut, encodedData, err => {
-
+            var fileOut = path.join(__dirname,"api","wordcloud.png")
+            fs.writeFile(fileOut, encodedData, err => {
+               
                 if (err) {
                     console.log(err);
                 }
+                wordCloudLoaded = true;
+                if(wordCloudLoaded && collageLoaded){
+          
+                    sendFinalAPIRequest(res,sendBody);
+                }
+               
             })
         });
 
@@ -261,16 +249,7 @@ function test() {
         console.log("Error: " + err.message);
     });
 
-}
-
-
-
-
-function test2() {
-    const robertServer = servers.robertServer
-    var combinedRobertServer = robertServer + "Minecraft"
-    console.log("robert Server: ",combinedRobertServer)
-    https.get(combinedRobertServer, (resp) => {
+   https.get(robertURL, (resp) => {
         let data = '';
 
         // A chunk of data has been received.
@@ -280,15 +259,85 @@ function test2() {
 
         // The whole response has been received. Print out the result.
         resp.on('end', () => {
-            console.log(data)
-            //console.log(JSON.parse(data));
+            try{
+                data = JSON.parse(data);
+            }catch{
+                console.log("data is wrong");
+                res.status(500).send("oh no");
+                return;
+            }
+            fsExtra.emptyDirSync(path.join(__dirname,"api","images"))
+       
+            allImages = data.primary.concat(data.related);
 
+            for(var i = 0; i < allImages.length; i++){
+            
+                var matches = allImages[i].match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                encodedData = new Buffer(matches[2], 'base64')
+                var fileOut = path.join(__dirname,"api","images",i+".png")
+                fs.writeFileSync(fileOut, encodedData);
+              
+               
+            }
+         
+               let final = Promise.resolve(createCollage.createCollageAPI(path.join(__dirname,"api","images")))
+               final.then(()=>{
+            
+                collageLoaded = true;
+                
+                if(wordCloudLoaded && collageLoaded){
+                    sendFinalAPIRequest(res,sendBody)
+                }
+               })
+               
+            
+           
         });
 
     }).on("error", (err) => {
         console.log("Error: " + err.message);
-    });
+    }); 
+
+
+})
+
+function sendFinalAPIRequest(res,sendBody){
+    console.log("sending final api");
+    fs.readFile(path.join(__dirname, "api", "wordcloud.png"), (err, data) => {
+        if (err) res.status(500).send(err);
+
+        //get image file extension name
+        let extensionName = path.extname(path.join(__dirname, "api", "wordcloud.png"));
+
+        //convert image file to base64-encoded string
+        let base64Image = new Buffer(data, 'binary').toString('base64');
+
+        //combine all strings
+        let imgSrcString = `data:image/${extensionName.split('.').pop()};base64,${base64Image}`;
+       
+        sendBody.wordCloudData = imgSrcString;
+       
+        fs.readFile(path.join(__dirname,"api","collage.png"),(err,data)=>{
+            if (err) res.status(500).send(err);
+
+            //get image file extension name
+            let extensionName = path.extname(path.join(__dirname, "api", "wordcloud.png"));
+
+            //convert image file to base64-encoded string
+            let base64Image = new Buffer(data, 'binary').toString('base64');
+
+            //combine all strings
+            let imgSrcString = `data:image/${extensionName.split('.').pop()};base64,${base64Image}`;
+        
+        
+            sendBody.collageData = imgSrcString;
+            res.status(200).send(JSON.stringify(sendBody))
+        })
+        
+        
+    })
 }
+
 
 
 
