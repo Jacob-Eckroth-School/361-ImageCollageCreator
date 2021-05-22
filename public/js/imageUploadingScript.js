@@ -8,6 +8,7 @@ var imageCount = 0;
 var uploadButton = document.getElementById("uploadButton")
 
 
+
 uploadButton.addEventListener("click",uploadImage);
 var imgUpload = document.getElementById("imgupload");
 imgUpload.addEventListener('change',function(){
@@ -17,10 +18,8 @@ imgUpload.addEventListener('change',function(){
             return;
         }
         src = URL.createObjectURL(this.files[0]); // set src to blob url
-        var newID = this.files[0].name + imageCount + Math.floor(Math.random() * 10000)
+        var newID = generateID(this.files[0].name)
         
-        
-
        
         images[newID] = src;
         createCropWindow(newID,false);
@@ -29,6 +28,10 @@ imgUpload.addEventListener('change',function(){
         imgUpload.value='';
     }
 });
+
+function generateID(name){
+    return name + imageCount + Math.floor(Math.random() * 10000)
+}
 function addImage(newID,imageExistsAlready){
     if(!imageExistsAlready){
         imageCount++;
@@ -142,3 +145,9 @@ function uploadImage(){
 
 }
 //https://stackabuse.com/handling-file-uploads-in-node-js-with-expres-and-multer/
+
+
+var backButton = document.getElementById("backButton")
+backButton.addEventListener("click",function(){
+    window.location.href="/"
+})

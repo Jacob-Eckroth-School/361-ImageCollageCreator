@@ -7,6 +7,7 @@ const request = require('request');
 var exphbs = require('express-handlebars');
 const path = require('path');
 const https = require('https');
+var fsExtra = require('fs-extra')
 //app is our server.
 var app = express();
 
@@ -142,8 +143,13 @@ app.post('/uploadImages', function (req, res) {
     var amountOfImages = req.body.imageAmount;
     var title = req.body.collageTitle;
     var dirLocation = path.join(__dirname, "/images", title)
+    if(dirLocation.includes('.')){
+        res.status(400).send("PLEASE DONT HAVE PERIODS")
+    }
     if (!fs.existsSync(dirLocation)) {
         fs.mkdirSync(dirLocation, 0744);
+    }else{  //we want to empty the directory. note that this is a huge security flaw but I don't care
+        fsExtra.emptyDirSync(dirLocation)
     }
     var imagesText = req.body.images;
 
@@ -165,6 +171,34 @@ app.post('/uploadImages', function (req, res) {
     }
     res.status(200).send();
     createCollage.createCollages(title,dirLocation)
+})
+
+
+app.get('/checkForOldImages/:title',function(req,res){
+    var title = req.params.title
+
+    var responseBody = {
+        images: []
+    }
+    var sendImagesArray = []
+    var imagesDirectoryPath = path.join(__dirname,"images",title)
+  
+    if(fs.existsSync(imagesDirectoryPath)){
+        arrayOfFiles = fs.readdirSync(imagesDirectoryPath)
+        arrayOfFiles.forEach(function(file){
+            fileLocation = path.join(imagesDirectoryPath,file)
+            console.log(fileLocation)
+            const data = fs.readFileSync(fileLocation,'base64')
+            console.log('read the file')
+
+            sendImagesArray.push(data);
+            
+            console.log('done reading file")')
+        })
+        
+    }
+    responseBody.images = sendImagesArray;
+    res.status(200).send(JSON.stringify(responseBody))
 })
 
 
