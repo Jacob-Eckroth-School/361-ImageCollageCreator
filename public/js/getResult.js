@@ -34,3 +34,10 @@ function loadResult(title){
 document.getElementById("goAgainButton").addEventListener("click",function(){
     window.location.href="/"
 })
+
+document.getElementById("backButton").addEventListener("click",function(){
+    var options =  window.location.pathname.split("/")
+    options.pop()
+    var title = options.pop();
+    window.location.replace("/collageType/"+title)
+})
