@@ -24,6 +24,7 @@
     flex-flow:column wrap;
     justify-content:center;
     align-items:center;
+  
 }
 
 .buttonsHolder{
@@ -65,10 +66,12 @@
 #photoHolder{
     
     width:20%;
-    height:100px;
+    
     display:flex;
     flex-flow: column;
     align-items:center;
+    margin-bottom:100px;
+
 
 }
 
@@ -177,4 +180,9 @@
     height:40px;
     cursor:pointer;
     display:none;
+    font-size:1.5rem;
+    color:black;
+}
+#sendButton:hover{
+    color:#00aeef;
 }
