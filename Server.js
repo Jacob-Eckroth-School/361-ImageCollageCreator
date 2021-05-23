@@ -205,6 +205,22 @@ app.get('/checkForOldImages/:title',function(req,res){
 //STUFF FOR INTERACTIBILITY WITH OTHER SERVERS
 
 
+app.get('/robert',function(req,res){
+    res.render('robert')
+})
+app.get('/andy',function(req,res){
+    res.render('andy')
+})
+
+
+app.get('/apiWordCloud',function(req,res){
+    res.send(path.join(__dirname,"api","wordcloud.png"))
+})
+app.get('/apiCollage',function(req,res){
+    res.send(path.join(__dirname,"api","collage.png"))
+})
+
+
 
 app.get('/apirequest/:title', function (req, res) {
     var robertURL = servers.robertServer + req.params.title;
