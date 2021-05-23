@@ -214,10 +214,10 @@ app.get('/andy',function(req,res){
 
 
 app.get('/apiWordCloud',function(req,res){
-    res.send(path.join(__dirname,"api","wordcloud.png"))
+    res.sendFile(path.join(__dirname,"api","wordcloud.png"))
 })
 app.get('/apiCollage',function(req,res){
-    res.send(path.join(__dirname,"api","collage.png"))
+    res.sendFile(path.join(__dirname,"api","collage.png"))
 })
 
 
