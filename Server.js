@@ -113,13 +113,31 @@ app.get('/getCollage/:collageTitle/:style', function (req, res) {
     
 
     var imageLocation = require('path').join(__dirname, "collages", req.params.collageTitle + "-" + req.params.style+".png");
+    
+    checkIfCollagesDirectoryExists();
     console.log("Image Location:",imageLocation)
     seeIfFileExists(imageLocation,2000,8,res)
         
-  
-
 
 })
+
+//checks to see if the ~/collages directory exists, if it doesn't it creates it.
+function checkIfCollagesDirectoryExists(){
+    if(fs.existsSync(path.join(__dirname,"collages"))){
+        return;
+    }else{
+        fs.mkdirSync(path.join(__dirname,"collages"))
+    }
+}
+//checks to see if the ~/images directory exists, if it doesn't it creates it.
+function checkIfImagesDirectoryExists(){
+    if(fs.existsSync(path.join(__dirname,"images"))){
+        return;
+    }else{
+        fs.mkdirSync(path.join(__dirname,"images"))
+    }
+}
+
 
 function seeIfFileExists(fileLocation,timeout,checksLeft,res){
     console.log("seeing if file exists with ",checksLeft," checks left")
@@ -137,40 +155,47 @@ function seeIfFileExists(fileLocation,timeout,checksLeft,res){
     }
 }
 
-
-
-app.post('/uploadImages', function (req, res) {
-    var amountOfImages = req.body.imageAmount;
-    var title = req.body.collageTitle;
-    var dirLocation = path.join(__dirname, "/images", title)
-    if(dirLocation.includes('.')){
-        res.status(400).send("PLEASE DONT HAVE PERIODS")
-    }
+function checkIfUserDirectoryExists(dirLocation){
     if (!fs.existsSync(dirLocation)) {
         fs.mkdirSync(dirLocation, 0744);
     }else{  //we want to empty the directory. note that this is a huge security flaw but I don't care
         fsExtra.emptyDirSync(dirLocation)
     }
-    var imagesText = req.body.images;
+}
 
+app.post('/uploadImages', function (req, res) {
+    var amountOfImages = req.body.imageAmount;
+    var title = req.body.collageTitle;
+    checkIfImagesDirectoryExists();
+    var dirLocation = path.join(__dirname, "/images", title)
+    if(dirLocation.includes('.')){
+        res.status(400).send("PLEASE DONT HAVE PERIODS")
+    }
+    checkIfUserDirectoryExists(dirLocation)
+   
+    var imagesText = req.body.images;
+    var savedImages = 0;
     for (var i = 0; i < amountOfImages; i++) {
         var matches = imagesText[i].match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
             response = {};
         if (matches.length !== 3) {
             return new Error('Invalid input string');
         }
-        response.type = matches[1];
+        response.type = (matches[1]).split('/').pop();
+        console.log(response.type)
         response.data = new Buffer(matches[2], 'base64');
-        var fileOut = dirLocation + "/" + i + ".png"
-        fs.writeFileSync(fileOut, response.data, err => {
-
-            if (err) {
-                console.log(err);
+        var fileOut = dirLocation + "/" + i + "."+response.type;
+        fs.writeFile(fileOut, response.data,function(err){
+            if(err) return console.log(err);
+            savedImages++;
+            if(savedImages == amountOfImages){
+         
+                createCollage.createCollages(title,dirLocation)
             }
         })
     }
     res.status(200).send();
-    createCollage.createCollages(title,dirLocation)
+    
 })
 
 
