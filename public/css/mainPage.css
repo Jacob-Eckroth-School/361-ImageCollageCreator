@@ -4,5 +4,98 @@
     align-items:center;
     width:70%;
     margin-left:15%;
+    text-align:center;
    
 }
+
+#inputHolder{
+    display:flex;
+    flex-flow:row wrap;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+    height:30px;
+    text-shadow:3px 3px 6px rgb(46, 46, 46);
+    width:100%;
+}
+
+label{
+    margin-right:5%;
+}
+#title{
+
+   
+    height:100%;
+    margin-right:4%;
+    width:200px;
+  
+}
+
+
+#lettersLeft{
+    text-shadow:none;
+    color:#bf1e2e;
+   margin-right:4%;
+}
+
+#clickButton{
+    background-color:#818285;
+    border:none;
+    border-radius: 50%;
+    width:60px;
+    height:60px;
+    font-size:40px;
+    transition:box-shadow 1s linear;
+    
+    
+}
+#clickButton:hover{
+    cursor:pointer;
+}
+@media(max-width:740px){
+    #contentHolder{
+        width:80%;
+        margin-left:10%;
+    }
+}
+
+@media(max-width:630px){
+    #contentHolder{
+        width:80%;
+        margin-left:10%;
+    }
+    #title{
+        width:175px;
+    }
+}
+@media(max-width:570px){
+    #contentHolder{
+        width:90%;
+        margin-left:5%;
+    }
+    #clickButton{
+        width:40px;
+        height:40px;
+        font-size:20px;
+    }
+    #title{
+
+        width:100px;
+    }
+    #inputHolder{
+        font-size:25px;
+    }
+}
+
+
+@media(max-width:420px){
+    #contentHolder{
+        width:95%;
+        margin-left:2.5%;
+    }
+    #title{
+        width:75px;
+    }
+}
+
+
