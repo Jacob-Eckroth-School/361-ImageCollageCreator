@@ -7,6 +7,7 @@ sendButton.addEventListener("click",sendImages);
 
 
 async function sendImages(){
+    replaceDoneWithSpinner();
     var totalImages = 0;
     var imagesProcessed = 0;
     for(const [key, imageURL] of Object.entries(images)){
@@ -55,6 +56,17 @@ async function sendImages(){
     
 }
 
+function replaceDoneWithSpinner(){
+    document.getElementById("uploadButton").style.display="none"
+    document.getElementById("sendButton").style.display="none"
+    var spinnerHTML = Handlebars.templates.spinner();
+    document.getElementById("imgupload").insertAdjacentHTML("afterend",spinnerHTML);
+    replaceExplanationTextWithProcessing()
+}
+
+function replaceExplanationTextWithProcessing(){
+    document.querySelector(".descriptionText").textContent="Processing..."
+}
 
 function sendBodyFunction(sendBody){
 
