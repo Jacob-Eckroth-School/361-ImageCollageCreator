@@ -313,7 +313,7 @@ app.get('/apirequest/:title', function (req, res) {
 
             for(var i = 0; i < allImages.length; i++){
             
-                var matches = allImages[i].match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+                var matches = allImages[i].base64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
                 encodedData = new Buffer(matches[2], 'base64')
                 var fileOut = path.join(__dirname,"api","images",i+".png")
                 fs.writeFileSync(fileOut, encodedData);
