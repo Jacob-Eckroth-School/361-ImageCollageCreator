@@ -167,7 +167,7 @@ app.post('/uploadImages', function (req, res) {
 
 
     checkIfUserDirectoryExists(dirLocation)
-    writeImagesAndCreateCollages(dirLocation,title,req,body.images)
+    writeImagesAndCreateCollages(dirLocation,title,req.body.images)
     
     res.status(200).send();
     

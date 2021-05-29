@@ -8,12 +8,12 @@ templates['imageDisplay'] = template({"compiler":[8,">= 4.3.0"],"main":function(
         return undefined
     };
 
-  return "\r\n<div class = \"imageHolder\" id=\""
+  return "\n<div class = \"imageHolder\" id=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"imageID") || (depth0 != null ? lookupProperty(depth0,"imageID") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"imageID","hash":{},"data":data,"loc":{"start":{"line":2,"column":31},"end":{"line":2,"column":42}}}) : helper)))
-    + "\">  \r\n    <img class = \"animalPicture\" src=\""
+    + "\">  \n    <img class = \"animalPicture\" src=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"animalImage") || (depth0 != null ? lookupProperty(depth0,"animalImage") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"animalImage","hash":{},"data":data,"loc":{"start":{"line":3,"column":38},"end":{"line":3,"column":53}}}) : helper)))
     + "\" alt=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"alt") || (depth0 != null ? lookupProperty(depth0,"alt") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"alt","hash":{},"data":data,"loc":{"start":{"line":3,"column":60},"end":{"line":3,"column":67}}}) : helper)))
-    + "\" />\r\n    <div class=\"buttonsHolder\">\r\n        <button class=\"crop alterButton\" >Crop</button>\r\n        <button class=\"delete alterButton\">Delete</button>\r\n    </div>\r\n</div>\r\n";
+    + "\" />\n    <div class=\"buttonsHolder\">\n        <button class=\"crop alterButton\" >Crop</button>\n        <button class=\"delete alterButton\">Delete</button>\n    </div>\n</div>\n";
 },"useData":true});
 })();
