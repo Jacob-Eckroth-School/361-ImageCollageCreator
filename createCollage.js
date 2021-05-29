@@ -214,9 +214,23 @@ function writeCanvasToFile(canvas, title, drawingTitle, strokeText) {
     } else if (strokeText == true) {
         extension = "-stroke"
     }
-    fs.writeFile(path.join(__dirname, 'collages', title + extension + ".png"), buffer, function (err) {
+    var fileLocation = path.join(__dirname, 'collages', title + extension + ".png")
+    fs.writeFile(fileLocation, buffer, function (err) {
         if (err) throw err;
     })
+}
+
+function getNewSizeOfImage(oldWidth,oldHeight){
+    var dimensions = {}
+    var widthToHeightRatio = oldWidth/oldHeight;
+    if (oldWidth > oldHeight) {
+        dimensions.width = randomInt(minImageWidth, maxImageWidth)
+        dimensions.height = Math.floor(dimensions.width / widthToHeightRatio);
+    } else {
+        dimensions.height = randomInt(minImageHeight, maxImageHeight)
+        dimensions.width = Math.floor(dimensions.height * widthToHeightRatio);
+    }
+    return dimensions;
 }
 
 function drawFirstFourImagesToCanvas(currentImageIndex, images, context) {
@@ -235,35 +249,30 @@ function drawFirstFourImagesToCanvas(currentImageIndex, images, context) {
 
         var currentWidth = Number(currentImage.width);
         var currentHeight = Number(currentImage.height);
-        var wToH = currentImage.width / currentImage.height;
-        let newWidth, newHeight;
-        if (currentWidth > currentHeight) {
-            newWidth = randomInt(minImageWidth, maxImageWidth)
-            newHeight = Math.floor(newWidth / wToH);
-        } else {
-            newHeight = randomInt(minImageHeight, maxImageHeight)
-            newWidth = Math.floor(newHeight * wToH);
-        }
+        
+        var dimensions = getNewSizeOfImage(currentWidth,currentHeight);
+     
+       
         var xPos, yPos;
         if (i % 2 == 0) {
             xPos = 0
         } else {
-            xPos = width - newWidth
+            xPos = width - dimensions.width
         }
         if (i < 2) {
             yPos = 0
         } else {
-            yPos = height - newHeight
+            yPos = height - dimensions.height
         }
         if (i === 0) {
-            info.leftTopMaxX = xPos + newWidth
-            info.leftTopMaxY = yPos + newHeight
+            info.leftTopMaxX = xPos + dimensions.width
+            info.leftTopMaxY = yPos + dimensions.height
         } else if (i === 1) {
-            info.rightTopMaxY = yPos + newHeight
+            info.rightTopMaxY = yPos + dimensions.height
         } else if (i === 2) {
-            info.leftBottomMaxX = xPos + newWidth
+            info.leftBottomMaxX = xPos + dimensions.width
         }
-        context.drawImage(currentImage, xPos, yPos, newWidth, newHeight)
+        context.drawImage(currentImage, xPos, yPos, dimensions.width, dimensions.height)
         currentImageIndex++
     }
     return info;
@@ -277,15 +286,8 @@ function drawSecondFourImagesToCanvas(currentImageIndex, images, context, imageI
         var currentImage = images[currentImageIndex]
         var currentWidth = Number(currentImage.width);
         var currentHeight = Number(currentImage.height);
-        var wToH = currentImage.width / currentImage.height;
-        let newWidth, newHeight;
-        if (currentWidth > currentHeight) {
-            newWidth = randomInt(minImageWidth, maxImageWidth)
-            newHeight = Math.floor(newWidth / wToH);
-        } else {
-            newHeight = randomInt(minImageHeight, maxImageHeight)
-            newWidth = Math.floor(newHeight * wToH);
-        }
+        var dimensions = getNewSizeOfImage(currentWidth,currentHeight);
+        
         var xPos, yPos;
         switch (i) {
             case 0:
@@ -297,15 +299,15 @@ function drawSecondFourImagesToCanvas(currentImageIndex, images, context, imageI
                 yPos = imageInfo.leftTopMaxY
                 break;
             case 2:
-                xPos = width - newWidth
+                xPos = width - dimensions.width
                 yPos = imageInfo.rightTopMaxY
                 break;
             case 3:
                 xPos = imageInfo.leftBottomMaxX
-                yPos = height - newHeight
+                yPos = height - dimensions.height
                 break;
         }
-        context.drawImage(currentImage, xPos, yPos, newWidth, newHeight)
+        context.drawImage(currentImage, xPos, yPos, dimensions.width, dimensions.height)
         currentImageIndex++
     }
 }
@@ -316,20 +318,13 @@ function drawTheRestOfImagesToCanvas(currentImageIndex, images, context) {
         var currentImage = images[currentImageIndex]
         var currentWidth = Number(currentImage.width);
         var currentHeight = Number(currentImage.height);
-        var wToH = currentImage.width / currentImage.height;
-        let newWidth, newHeight;
-        if (currentWidth > currentHeight) {
-            newWidth = randomInt(minImageWidth, maxImageWidth)
-            newHeight = Math.floor(newWidth / wToH);
-        } else {
-            newHeight = randomInt(minImageHeight, maxImageHeight)
-            newWidth = Math.floor(newHeight * wToH);
-        }
+        var dimensions = getNewSizeOfImage(currentWidth,currentHeight);
+       
         var xPos, yPos
         var foundSpot = false
 
-        for (var x = 0; x < width - newWidth; x++) {
-            for (var y = 0; y < height - newHeight; y++) {
+        for (var x = 0; x < width - dimensions.width; x++) {
+            for (var y = 0; y < height - dimensions.height; y++) {
                 var pixel = context.getImageData(x, y, 1, 1)
                 var data = pixel.data;
 
@@ -346,18 +341,17 @@ function drawTheRestOfImagesToCanvas(currentImageIndex, images, context) {
             }
         }
         if (!foundSpot) {
-            xPos = randomInt(0, width - newWidth)
-            yPos = randomInt(0, height - newHeight)
+            xPos = randomInt(0, width - dimensions.width)
+            yPos = randomInt(0, height - dimensions.height)
         }
 
 
-        context.drawImage(currentImage, xPos, yPos, newWidth, newHeight)
+        context.drawImage(currentImage, xPos, yPos, dimensions.width, dimensions.height)
         currentImageIndex++
     }
 }
 
-
-function drawTitleToCanvas(strokeText, context, title) {
+function setUpTitleContext(context){
     context.shadowOffsetX = 5;
     context.shadowOffsetY = 5;
 
@@ -371,11 +365,16 @@ function drawTitleToCanvas(strokeText, context, title) {
     lineHeight = context.measureText('M').width;
     context.fillStyle = "white"
     context.textAlign = "center"
+    context.strokeStyle = "black"
+    context.lineWidth = 5 - title.length / 10.
+}
+
+function drawTitleToCanvas(strokeText, context, title) {
+    setUpTitleContext(context)
     context.fillText(title, width / 2, lineHeight + 10)
 
     if (strokeText) {
-        context.strokeStyle = "black"
-        context.lineWidth = 5 - title.length / 10.
+        
         context.strokeText(title, width / 2, lineHeight + 10)
     }
 
