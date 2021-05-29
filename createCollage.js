@@ -351,7 +351,7 @@ function drawTheRestOfImagesToCanvas(currentImageIndex, images, context) {
     }
 }
 
-function setUpTitleContext(context){
+function setUpTitleContext(context,title){
     context.shadowOffsetX = 5;
     context.shadowOffsetY = 5;
 
@@ -370,7 +370,7 @@ function setUpTitleContext(context){
 }
 
 function drawTitleToCanvas(strokeText, context, title) {
-    setUpTitleContext(context)
+    setUpTitleContext(context,title)
     context.fillText(title, width / 2, lineHeight + 10)
 
     if (strokeText) {

@@ -74,6 +74,10 @@
 
 
 }
+.imagesHeader{
+    margin-top:10px;
+    width:90%;
+}
 
 #uploadButton{
     width:20%;

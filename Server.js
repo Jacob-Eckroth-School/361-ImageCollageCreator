@@ -175,7 +175,7 @@ app.post('/uploadImages', function (req, res) {
 
 function writeImagesAndCreateCollages(dirLocation,title,imagesText){
     var savedImages = 0;
-    var amountOfImages = imagesText[i].length;
+    var amountOfImages = imagesText.length;
     for (var i = 0; i < amountOfImages; i++) {
         var matches = imagesText[i].match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
             response = {};
