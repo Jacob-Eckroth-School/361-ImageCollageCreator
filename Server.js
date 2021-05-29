@@ -11,8 +11,7 @@ var fsExtra = require('fs-extra')
 //app is our server.
 var app = express();
 
-//this tells it that we will use public as our default static folder. When receiving a request for a file like "index.html" or "index.js" it will check public/index.js or 
-// public/index.html first
+
 
 const MAXLENGTH = 30;
 
@@ -59,9 +58,7 @@ app.listen(port, function () {
     console.log("==Server is listening on port ", port);
 });
 
-//this says that if we get a request for a page, first it will look through our
-//publicCat/ folder to see if it can find it there. So if it gets a request for index.html
-//it will look first to see if it's in there, and if it is just send it.
+
 app.use(express.static(__dirname + '/public'));
 
 
@@ -83,16 +80,12 @@ app.get('/uploadImages/:collageTitle', function (req, res, next) {
         })
     }
 
-
-
 })
 
 app.get('/collageType/:collageTitle',function(req,res){
     res.render('collageTypePage')
 
 })
-
-
 
 
 app.get('/result', function (req, res) {
@@ -109,8 +102,6 @@ const createCollage = require(__dirname + "/createCollage");
 
 app.get('/getCollage/:collageTitle/:style', function (req, res) {
     console.log("got request for collage");
-
-    
 
     var imageLocation = require('path').join(__dirname, "collages", req.params.collageTitle + "-" + req.params.style+".png");
     
@@ -158,23 +149,33 @@ function seeIfFileExists(fileLocation,timeout,checksLeft,res){
 function checkIfUserDirectoryExists(dirLocation){
     if (!fs.existsSync(dirLocation)) {
         fs.mkdirSync(dirLocation, 0744);
-    }else{  //we want to empty the directory. note that this is a huge security flaw but I don't care
+    }else{  //TODO: Fix Security Flaw in emptying directory
         fsExtra.emptyDirSync(dirLocation)
     }
 }
 
+
 app.post('/uploadImages', function (req, res) {
-    var amountOfImages = req.body.imageAmount;
+    
     var title = req.body.collageTitle;
     checkIfImagesDirectoryExists();
     var dirLocation = path.join(__dirname, "/images", title)
+    
     if(dirLocation.includes('.')){
         res.status(400).send("PLEASE DONT HAVE PERIODS")
     }
+
+
     checkIfUserDirectoryExists(dirLocation)
-   
-    var imagesText = req.body.images;
+    writeImagesAndCreateCollages(dirLocation,title,req,body.images)
+    
+    res.status(200).send();
+    
+})
+
+function writeImagesAndCreateCollages(dirLocation,title,imagesText){
     var savedImages = 0;
+    var amountOfImages = imagesText[i].length;
     for (var i = 0; i < amountOfImages; i++) {
         var matches = imagesText[i].match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
             response = {};
@@ -194,9 +195,8 @@ app.post('/uploadImages', function (req, res) {
             }
         })
     }
-    res.status(200).send();
-    
-})
+}
+
 
 
 app.get('/checkForOldImages/:title',function(req,res){
@@ -213,18 +213,18 @@ app.get('/checkForOldImages/:title',function(req,res){
         arrayOfFiles.forEach(function(file){
             fileLocation = path.join(imagesDirectoryPath,file)
             console.log(fileLocation)
-            const data = fs.readFileSync(fileLocation,'base64')
-            console.log('read the file')
+            const data = fs.readFileSync(fileLocation,'base64')     //TODO: make this asynchronous.
 
             sendImagesArray.push(data);
             
-            console.log('done reading file")')
+       
         })
         
     }
     responseBody.images = sendImagesArray;
     res.status(200).send(JSON.stringify(responseBody))
 })
+
 
 
 //STUFF FOR INTERACTIBILITY WITH OTHER SERVERS
