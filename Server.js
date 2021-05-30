@@ -385,5 +385,5 @@ function sendFinalAPIRequest(res,sendBody){
 //if we get here, then none of the above gets have worked, so we send this. You could also send a nice 404 page.
 app.get('*', function (req, res) {
     res.status(404);
-    res.send("The page you requested doesn't exist");
+    res.render('404');
 });

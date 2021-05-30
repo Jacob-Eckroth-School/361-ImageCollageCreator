@@ -1,0 +1,14 @@
+#contentHolder{
+    display:flex;
+    flex-flow:column wrap;
+    justify-content:center;
+    align-items: center;
+    text-align:center;
+}
+
+#backToHomePage{
+    color:white;
+    text-decoration:underline;
+    text-shadow:1px 1px 3px rgb(46, 46, 46);    
+}
+

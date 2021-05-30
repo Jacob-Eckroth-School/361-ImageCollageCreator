@@ -9,6 +9,11 @@ body{
 
 }
 
+h3{
+    font-size:20px;
+    text-shadow:1px 1px 3px rgb(46, 46, 46);
+    text-align:center;
+}
 
 h2{
     font-size:30px;
