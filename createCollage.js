@@ -76,7 +76,7 @@ async function createCanvasAsync(images, title, startTime) {
     var finish = new Date();
     var difference = new Date();
     difference.setTime(finish.getTime() - startTime.getTime());
-    console.log("Runtime in seconds:", difference.getSeconds() + difference.getMilliseconds() / 1000.);
+
 }
 
 function shuffle(array) {
@@ -196,7 +196,7 @@ function placeImagesOnCanvasDistributedCornersAPI(images) {
 
     drawTheRestOfImagesToCanvas(currentImageIndex, images, context);
     const buffer = canvas.toBuffer('image/png')
-    console.log("writing image")
+
     fs.writeFileSync(path.join(__dirname, 'api', "collage.png"), buffer)
 
 }

@@ -72,13 +72,22 @@ app.get('/', function (req, res) {
 
 app.get('/uploadImages/:collageTitle', function (req, res, next) {
     var userTitle = req.params.collageTitle;
-    if (userTitle.length > MAXLENGTH) {
-        next();
-    } else {
-        res.render('uploadImages', {
-            title: userTitle
-        })
+
+
+    var validLetters = /^[\w\s]+$/g;
+   
+    if(userTitle.match(validLetters)){
+        if (userTitle.length > MAXLENGTH) {
+            next();
+        } else {
+            res.render('uploadImages', {
+                title: userTitle
+            })
+        }
+    }else{
+        res.status(500).render('404')       //could change this to be correct... but do I really care?? not really.
     }
+    
 
 })
 
@@ -130,7 +139,7 @@ function checkIfImagesDirectoryExists(){
 
 
 function seeIfFileExists(fileLocation,timeout,checksLeft,res){
-    console.log("seeing if file exists with ",checksLeft," checks left")
+  
     if(fs.existsSync(fileLocation)){
         res.sendFile(fileLocation)
      
@@ -182,7 +191,7 @@ function writeImagesAndCreateCollages(dirLocation,title,imagesText){
             return new Error('Invalid input string');
         }
         response.type = (matches[1]).split('/').pop();
-        console.log(response.type)
+      
         response.data = new Buffer(matches[2], 'base64');
         var fileOut = dirLocation + "/" + i + "."+response.type;
         fs.writeFile(fileOut, response.data,function(err){
@@ -211,7 +220,7 @@ app.get('/checkForOldImages/:title',function(req,res){
         arrayOfFiles = fs.readdirSync(imagesDirectoryPath)
         arrayOfFiles.forEach(function(file){
             fileLocation = path.join(imagesDirectoryPath,file)
-            console.log(fileLocation)
+         
             const data = fs.readFileSync(fileLocation,'base64')     //TODO: make this asynchronous.
 
             sendImagesArray.push(data);
@@ -342,7 +351,7 @@ app.get('/apirequest/:title', function (req, res) {
 })
 
 function sendFinalAPIRequest(res,sendBody){
-    console.log("sending final api");
+
     fs.readFile(path.join(__dirname, "api", "wordcloud.png"), (err, data) => {
         if (err) res.status(500).send(err);
 

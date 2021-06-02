@@ -28,7 +28,9 @@ inputBox.addEventListener('input',function(){
 function canSubmit(){
     var length = inputBox.value.length;
     var remainingLetters = maxLetters - length;
-    
+    if(!isValidCollageName(inputBox.value)){
+        return false;
+    }
     if(remainingLetters < 0 || remainingLetters == maxLetters){
         return false;
     }else{
@@ -56,7 +58,18 @@ function updateButton(isButtonActive){
 var button = document.getElementById("clickButton");
 clickButton.addEventListener("click",attemptSubmit);
 
+function isValidCollageName(collageName){
+    var validLetters = /^[\w\s]+$/g;
+   
+    if(collageName.match(validLetters)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function attemptSubmit(){
+
     if(canSubmit()){
         var collageTitle = inputBox.value;
         window.location.href = '/uploadImages/'+collageTitle;   
