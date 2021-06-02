@@ -21,12 +21,11 @@ strokeCollage.addEventListener("click",()=>{
 
 function goToResultPage(type){
    var title =  window.location.pathname.split("/").pop();
-   window.location.replace("/result/"+title+"/"+type)
+   window.location.href = "/result/"+title+"/"+type
 }
 
 var backButton = document.getElementById("backButton");
 
 backButton.addEventListener("click",function(){
-    var title =  window.location.pathname.split("/").pop();
-    window.location.replace("/uploadImages/"+title)
+    history.back();
 })

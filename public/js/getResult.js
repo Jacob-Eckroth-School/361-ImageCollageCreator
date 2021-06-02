@@ -36,8 +36,5 @@ document.getElementById("goAgainButton").addEventListener("click",function(){
 })
 
 document.getElementById("backButton").addEventListener("click",function(){
-    var options =  window.location.pathname.split("/")
-    options.pop()
-    var title = options.pop();
-    window.location.replace("/collageType/"+title)
+    history.back()
 })

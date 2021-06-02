@@ -75,7 +75,7 @@ function sendBodyFunction(sendBody){
     postRequest.addEventListener("load",function(event){
         if(event.target.status === 200){
            
-            window.location.replace("/collageType/"+sendBody.collageTitle);
+            window.location.href = "/collageType/"+sendBody.collageTitle;
            
         }else{
             console.log("we are not in business");

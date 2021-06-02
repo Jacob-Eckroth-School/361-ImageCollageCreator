@@ -101,12 +101,11 @@ const createCollage = require(__dirname + "/createCollage");
 
 
 app.get('/getCollage/:collageTitle/:style', function (req, res) {
-    console.log("got request for collage");
 
     var imageLocation = require('path').join(__dirname, "collages", req.params.collageTitle + "-" + req.params.style+".png");
     
     checkIfCollagesDirectoryExists();
-    console.log("Image Location:",imageLocation)
+    
     seeIfFileExists(imageLocation,2000,8,res)
         
 

@@ -59,8 +59,6 @@ clickButton.addEventListener("click",attemptSubmit);
 function attemptSubmit(){
     if(canSubmit()){
         var collageTitle = inputBox.value;
-        window.location.replace('/uploadImages/'+collageTitle);
-    }else{
-
+        window.location.href = '/uploadImages/'+collageTitle;   
     }
 }

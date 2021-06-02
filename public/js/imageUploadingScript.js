@@ -149,5 +149,5 @@ function uploadImage(){
 
 var backButton = document.getElementById("backButton")
 backButton.addEventListener("click",function(){
-    window.location.href="/"
+    history.back()
 })
